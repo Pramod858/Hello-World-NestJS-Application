@@ -10,6 +10,7 @@ Before you begin, ensure you have met the following requirements:
 - You have installed [Node.js](https://nodejs.org/) (which includes npm).
 - You have installed the NestJS CLI globally. If not, you can install it using:
 ```bash
+sudo apt update
 sudo apt install npm
 ```
 ```bash
