@@ -34,9 +34,9 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i key.pem ${USER}@${HOST} "
           sudo apt update &&
           sudo apt install -y npm &&
-          sudo npm install -g @nestjs/cli &&
+          sudo npm install -g @nestjs/cli pm2 &&
           cd ~/hello-world-nestjs &&
           npm install &&
-          pm2 stop all &&
-          npm run start:prod
+          pm2 stop all || true &&
+          pm2 start dist/main.js --name nest-app
         "
