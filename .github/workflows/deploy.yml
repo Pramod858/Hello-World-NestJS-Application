@@ -37,6 +37,7 @@ jobs:
           sudo npm install -g @nestjs/cli pm2 &&
           cd ~/hello-world-nestjs &&
           npm install &&
+          npm run build &&
           pm2 stop all || true &&
           pm2 start dist/main.js --name nest-app
         "
