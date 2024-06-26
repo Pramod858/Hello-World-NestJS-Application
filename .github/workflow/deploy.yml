@@ -1,0 +1,45 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Deploy to EC2
+      env:
+        KEY: ${{ secrets.AWS_EC2_KEY }}
+        HOST: ${{ secrets.AWS_EC2_HOST }}
+        USER: ${{ secrets.AWS_EC2_USER }}
+      run: |
+        echo "${KEY}" > key.pem
+        chmod 600 key.pem
+        sudo apt-get install -y rsync
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i key.pem" . ${USER}@${HOST}:~/hello-world-nestjs/
+        ssh -o StrictHostKeyChecking=no -i key.pem ${USER}@${HOST} "
+          sudo apt update &&
+          sudo apt install -y npm &&
+          sudo npm install -g @nestjs/cli &&
+          cd ~/hello-world-nestjs &&
+          npm install &&
+          pm2 stop all &&
+          npm run start:prod
+        "
