@@ -30,12 +30,6 @@ jobs:
         echo "${KEY}" > key.pem
         chmod 600 key.pem
         sudo apt-get install -y rsync
-        ssh -o StrictHostKeyChecking=no -i key.pem ${USER}@${HOST} "mkdir -p ~/hello-world-nestjs"
-        rsync -avz -e "ssh -o StrictHostKeyChecking=no -i key.pem" . ${USER}@${HOST}:~/hello-world-nestjs/
-        ssh -o StrictHostKeyChecking=no -i key.pem ${USER}@${HOST} "
-          echo "${KEY}" > key.pem
-        chmod 600 key.pem
-        sudo apt-get install -y rsync
         ssh -o StrictHostKeyChecking=no -i key.pem ${USER}@${HOST} "
           sudo apt update &&
           sudo apt install -y nodejs npm &&
